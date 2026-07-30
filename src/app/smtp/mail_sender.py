@@ -13,12 +13,17 @@ SMTP_TIMEOUT = int(os.getenv("SMTP_TIMEOUT", 30))
 FROM_ADDRESS = os.getenv("FROM_ADDRESS")
 USE_TLS = os.getenv("USE_TLS", "True").lower() == "true"
 
-def send_email(to_address, subject, body, from_address=FROM_ADDRESS):
+def send_email(to_address, subject, text_body = None, html_body = None, from_address=FROM_ADDRESS):
     msg = MIMEMultipart()
     msg["From"] = from_address
     msg["To"] = to_address
     msg["Subject"] = subject
-    msg.attach(MIMEText(body, "plain", "utf-8"))
+
+    if text_body:
+        msg.attach(MIMEText(text_body, "plain", "utf-8"))
+
+    if html_body:
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT) as server:
         if USE_TLS:
