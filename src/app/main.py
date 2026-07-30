@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 from dotenv import load_dotenv
 
-from app.db.combined_db_connection import combined_database_data
+from db.combined_db_connection import combined_database_data
 
 load_dotenv()
 FAVICON_URL = os.getenv("FAVICON_URL")

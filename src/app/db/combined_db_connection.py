@@ -1,5 +1,5 @@
-from kanban_db_connection import get_interesting_produktionslinien
-from internal_db_connection import get_every_lieferverzug
+from db.kanban_db_connection import get_interesting_produktionslinien
+from db.internal_db_connection import get_every_lieferverzug
 
 def combined_database_data():
     kanban_data = get_interesting_produktionslinien()
