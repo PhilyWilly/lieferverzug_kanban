@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel
 
 from db.combined_db_connection import combined_database_data
 
@@ -16,6 +17,11 @@ templates = Jinja2Templates(directory="src/templates")
 # Initialize app
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
+
+class Lieferverzug(BaseModel):
+    vorgangsnummer: str
+    neue_kw: int
+    lieferverzugs_grund: str
 
 
 r"""
@@ -52,36 +58,19 @@ r"""
 async def get_all_rows():
     get_db_data = combined_database_data()
     return JSONResponse(content= get_db_data)
-    return JSONResponse(content=[
-        {
-            "jahr": 2026,
-            "kw": 24,
-            "kundenname": "Kunde A",
-            "vorgangsnummer": "AU-202604/203065",
-            "vorgangstext": "Vorgang A",
-            "artikelbeschreibung": "Artikel A",
-            "artikelnr": "A123"
-         },
-        {
-            "jahr": 2026,
-            "kw": 24,
-            "kundenname": "Kunde B",
-            "vorgangsnummer": "AU-202604/203066",
-            "vorgangstext": "Vorgang B",
-            "artikelbeschreibung": "Artikel B",
-            "artikelnr": "B456"
-         },
-        {
-            "jahr": 2026,
-            "kw": 24,
-            "kundenname": "Kunde C",
-            "vorgangsnummer": "AU-202604/203067",
-            "vorgangstext": "Vorgang C",
-            "artikelbeschreibung": "Artikel C",
-            "artikelnr": "C789"
-         }
 
-    ])
+@app.post("/verzug/")
+async def insert_verzug(lieferverzug: Lieferverzug):
+    from db.internal_db_connection import insert_lieferverzug
+    try:
+        insert_lieferverzug(
+            vorgangsnummer=lieferverzug.vorgangsnummer,
+            neue_kw=lieferverzug.neue_kw,
+            lieferverzugs_grund=lieferverzug.lieferverzugs_grund
+        )
+        return JSONResponse(content={"message": "Lieferverzug inserted successfully."})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

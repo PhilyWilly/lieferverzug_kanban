@@ -21,7 +21,6 @@ def get_every_lieferverzug():
 
 def insert_lieferverzug(vorgangsnummer, neue_kw, lieferverzugs_grund):
     db_path = os.path.join("data", "database.db")
-    print(f"Database path: {db_path}")
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:

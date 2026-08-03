@@ -47,26 +47,6 @@ def execute_query(query, as_dict=True):
             conn.close()
 
 def get_interesting_produktionslinien():
-    now = datetime.now()
-    current_year = now.year
-    current_week = now.isocalendar()[1]
-    print(f"Current year: {current_year}, Current week: {current_week}")
-    # query = f"""
-    # SELECT 
-    #     vp_liefer_kwj as jahr, 
-    #     vp_liefer_kw as kw ,
-    #     ku_anschrift as kundenname,
-    #     vo_nummer as vorgangsnummer,
-    #     vorgang_text as vorgangstext,
-    #     beschreibung_kurz as artikelbeschreibung,
-    #     ar_nr as artikelnr
-    # FROM produktionslinie 
-    # WHERE 
-    #     vo_status IN (2)
-    #     AND vp_delete = 0
-    # ORDER BY vp_liefer_kwj, vp_liefer_kw
-    # LIMIT 10;
-    # """
     query = f"""SELECT
     p.*,
     (
@@ -116,8 +96,6 @@ def sanitize_produktionslinien(produktionslinien):
         return []
     sanitized = []
     for row in produktionslinien:
-        print(f"Sanitizing row: {row}")
-        print(f"Available keys in row: {list(row.keys())}")
         sanitized_row = {
             "jahr": row.get("vp_liefer_kwj", None),
             "kw": row.get("vp_liefer_kw", None),
@@ -125,36 +103,12 @@ def sanitize_produktionslinien(produktionslinien):
             "vorgangsnummer": row.get("vo_nummer", None),
             "vorgangstext": row.get("vorgang_text", None),
             "artikelbeschreibung": row.get("beschreibung_kurz", None),
-            "artikelnr": row.get("artikelnr", None)
+            "artikelnr": row.get("ar_nr", None)
         }
         sanitized.append(sanitized_row)
     return sanitized
 
-def testy():
-    query = f"""
-    SELECT 
-        *
-    FROM produktionslinie
-    WHERE 
-        vo_nummer NOT LIKE 'AN%'
-        AND vp_delete = 0
-        AND vo_nummer LIKE '%204550%'
-        AND vo_status IN (2)
-        AND id IN (
-            SELECT MAX(id)
-            FROM (
-                SELECT id, vo_id, vp_id
-                FROM produktionslinie
-                WHERE vo_nummer NOT LIKE 'AN%'
-            ) AS tmp
-            GROUP BY vp_id, vo_id
-        )
-    ORDER BY vp_liefer_kwj, vp_liefer_kw LIMIT 50;"""
-    result = execute_query(query, as_dict=True)
-    for row in result:
-        print("------------------------------------------")
-        for key, value in row.items():
-            print(f"{key}: {value}")
-
 if __name__ == "__main__":
-    testy()
+    print("Fetching interesting produktionslinien...")
+    produktionslinien = get_interesting_produktionslinien()
+    print(f"Fetched {len(produktionslinien)} rows.")
