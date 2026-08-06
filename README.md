@@ -40,19 +40,6 @@ graph TD
 |Kommission|TEXT|NO|
 
 
-## SQL Querys
-### Mirror Database Kanban
-```
-SELECT Jahr, KW, KW-Neu, Kommentar, Kunde, Auftrag, Kommission
-FROM 
-
-```
-
-### Get Data for Website
-```
-SELECT 
-```
-
 
 ## Aufbau der Website
 
