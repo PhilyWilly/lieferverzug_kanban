@@ -6,6 +6,8 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
+from app.smtp.lieferverzugs_mail import sende_lieferverzugs_mail
+from db.kanban_db_connection import get_mail_for_vorgangsnummer
 from db.combined_db_connection import combined_database_data
 
 load_dotenv()
@@ -22,6 +24,7 @@ class Lieferverzug(BaseModel):
     vorgangsnummer: str
     neue_kw: int
     lieferverzugs_grund: str
+    email: str = None  # Optional email field
 
 
 r"""
@@ -63,6 +66,17 @@ async def get_all_rows():
 async def insert_verzug(lieferverzug: Lieferverzug):
     from db.internal_db_connection import insert_lieferverzug
     try:
+        mail = lieferverzug.email
+        print(f"Received email from request: {mail}")
+        if not mail:
+            mail = await get_mail_for_vorgangsnummer(lieferverzug.vorgangsnummer)
+        print(f"Mail for Vorgangsnummer {lieferverzug.vorgangsnummer}: {mail}")
+        sende_lieferverzugs_mail(
+            empfaenger_email=mail,
+            bestellnummer=lieferverzug.vorgangsnummer,
+            voraussichtliche_kw=lieferverzug.neue_kw,
+            komission="N/A"  # Replace with actual komission if available
+        )
         insert_lieferverzug(
             vorgangsnummer=lieferverzug.vorgangsnummer,
             neue_kw=lieferverzug.neue_kw,

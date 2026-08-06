@@ -3,6 +3,8 @@ from db.internal_db_connection import get_every_lieferverzug
 
 def combined_database_data():
     kanban_data = get_interesting_produktionslinien()
+    if kanban_data is None:
+        return []
     lieferverzug_data = get_every_lieferverzug()
 
     # Create a dictionary for quick lookup of lieferverzug data by vorgangsnummer

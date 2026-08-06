@@ -198,11 +198,13 @@ async function sendLieferverzug(rowData) {
     const neueKW = neueKWInput ? neueKWInput.value : null;
     const lieferverzugsGrund = lieferverzugsGrundInput ? lieferverzugsGrundInput.value : null;
     const vorgangsnummer = rowData["vorgangsnummer"];
+    const email = rowData["email"] || null; // Get email from rowData if available
 
     const payload = {
         vorgangsnummer: vorgangsnummer,
         neue_kw: neueKW,
-        lieferverzugs_grund: lieferverzugsGrund
+        lieferverzugs_grund: lieferverzugsGrund,
+        email: email  // Include email if available
     };
 
     try {
