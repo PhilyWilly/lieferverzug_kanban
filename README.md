@@ -84,5 +84,10 @@ FROM = "lieferverzug@example.com"
 CLIENT = "None"
 TLS = "True"
 
+# Website
+FAVICON_URL= https://example.org/icon.ico
+SERVERURL = "localhost"
+SERVERPORT = 8000
+
 ```
 
