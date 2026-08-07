@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from app.smtp.lieferverzugs_mail import sende_lieferverzugs_mail
+from smtp.lieferverzugs_mail import sende_lieferverzugs_mail
 from db.kanban_db_connection import get_mail_for_vorgangsnummer
 from db.combined_db_connection import combined_database_data
 

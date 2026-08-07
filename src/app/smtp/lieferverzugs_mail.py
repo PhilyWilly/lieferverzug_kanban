@@ -1,4 +1,4 @@
-from mail_sender import send_email
+from smtp.mail_sender import send_email
 
 def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission):
     send_email(
