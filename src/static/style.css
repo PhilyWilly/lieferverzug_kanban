@@ -43,6 +43,15 @@ td.checkbox {
     align-items: center;
 }
 
+td.bestätigungs_button {
+    text-align: center;
+    align-items: center;
+}
+
+.confirm_button:enabled {
+    background-color: yellow;
+}
+
 td.jahr {
     /* vertical text for year column */
     writing-mode: vertical-rl;
