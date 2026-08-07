@@ -185,7 +185,7 @@ function inserTableRow(rowData, rows) {
                     cell.style.backgroundColor = 'yellow';
                 }
                 else if (parseInt(rowData[column]) > currentKW) {
-                    cell.style.backgroundColor = 'green';
+                    cell.style.backgroundColor = '#4bc84b';
                 }
             }
         }
