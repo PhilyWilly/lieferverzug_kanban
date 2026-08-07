@@ -6,12 +6,14 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from app.smtp.lieferverzugs_mail import sende_lieferverzugs_mail
+from smtp.lieferverzugs_mail import sende_lieferverzugs_mail
 from db.kanban_db_connection import get_mail_for_vorgangsnummer
 from db.combined_db_connection import combined_database_data
 
 load_dotenv()
 FAVICON_URL = os.getenv("FAVICON_URL")
+SERVERURL = os.getenv("SERVERURL")
+SERVERPORT = int(os.getenv("SERVERPORT"))
 
 # Setup templates
 templates = Jinja2Templates(directory="src/templates")
@@ -88,4 +90,4 @@ async def insert_verzug(lieferverzug: Lieferverzug):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host=SERVERURL, port=SERVERPORT)

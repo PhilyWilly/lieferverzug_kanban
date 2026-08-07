@@ -1,4 +1,4 @@
-from mail_sender import send_email
+from smtp.mail_sender import send_email
 
 def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission):
     send_email(
@@ -12,7 +12,7 @@ def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_k
 <p><b>Auftragsnummer:</b> {bestellnummer}<br>
 <b>Kommission:</b> {komission}</p>
 
-<p>Der Versand Ihres Auftrags ist aktuell für die Kalenderwoche {voraussichtliche_kw} vorgesehen.</p>
+<p>Der Versand Ihres Auftrags ist aktuell für die Kalenderwoche <b>{voraussichtliche_kw}</b> vorgesehen.</p>
 
 <p>Über Änderungen des Versandtermins informieren wir Sie selbstverständlich zeitnah.</p>
 

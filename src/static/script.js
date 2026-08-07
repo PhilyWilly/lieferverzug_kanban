@@ -136,7 +136,7 @@ function inserTableRow(rowData, rows) {
         }
         else if (column === "bestätigungs_button") {
             const button = document.createElement('button');
-            button.textContent = '✔';
+            button.textContent = 'Abschicken';
             button.id = `bestätigen_${rowData["vorgangsnummer"]}`;
             button.classList.add('confirm_button');
             button.addEventListener('click', () => {
