@@ -3,7 +3,6 @@ import sqlite3
 
 def get_every_lieferverzug():
     db_path = os.path.join("data", "database.db")
-    print(f"Database path: {db_path}")
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
@@ -26,8 +25,11 @@ def insert_lieferverzug(vorgangsnummer, neue_kw, lieferverzugs_grund):
     try:
         cursor.execute(
             """
-            INSERT INTO lieferverzug (vorgangsnummer, neue_kw, lieferverzugs_grund)
-            VALUES (?, ?, ?);
+        INSERT INTO lieferverzug (vorgangsnummer, neue_kw, lieferverzugs_grund)
+        VALUES (?, ?, ?)
+        ON CONFLICT(vorgangsnummer) DO UPDATE SET
+            neue_kw = excluded.neue_kw,
+            lieferverzugs_grund = excluded.lieferverzugs_grund
         """, (vorgangsnummer, neue_kw, lieferverzugs_grund)
         )
         connection.commit()
