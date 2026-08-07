@@ -7,15 +7,15 @@ def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_k
         html_body = f"""
 <p>Sehr geehrte Damen und Herren,</p>
 
-<p>wir möchten Sie über den aktuellen Stand Ihres Auftrags informieren:</p>
+<p>hiermit informieren wir Sie über den aktuellen Stand Ihres Auftrags:</p>
 
 <p><b>Auftragsnummer:</b> {bestellnummer}<br>
 <b>Kommission:</b> {komission}<br>
 <b>Produkt</b>: {artikelbeschreibung}</p>
 
-<p>Der Versand Ihres Auftrags ist aktuell für die Kalenderwoche <b>{voraussichtliche_kw}</b> verschoben.</p>
+<p>Der Versand Ihres Auftrags wurde geändert und ist nun für Kalenderwoche <b>{voraussichtliche_kw}</b> vorgesehen.</p>
 
-<p>Über Änderungen des Versandtermins informieren wir Sie selbstverständlich zeitnah.</p>
+<p>Sollten sich weitere Änderungen ergeben, informieren wir Sie selbstverständlich zeitnah.</p>
 
 <p>Vielen Dank für Ihr Vertrauen. Bei Fragen zu Ihrem Auftrag steht Ihnen unser Team gerne zur Verfügung.</p>
 
