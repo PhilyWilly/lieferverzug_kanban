@@ -198,10 +198,12 @@ async function sendLieferverzug(rowData) {
     const neueKW = neueKWInput ? neueKWInput.value : null;
     const lieferverzugsGrund = lieferverzugsGrundInput ? lieferverzugsGrundInput.value : null;
     const vorgangsnummer = rowData["vorgangsnummer"];
+    const kommission = rowData["vorgangstext"];
     const email = rowData["email"] || null; // Get email from rowData if available
 
     const payload = {
         vorgangsnummer: vorgangsnummer,
+        kommission: kommission,
         neue_kw: neueKW,
         lieferverzugs_grund: lieferverzugsGrund,
         email: email  // Include email if available
@@ -222,10 +224,10 @@ async function sendLieferverzug(rowData) {
 
         const result = await response.json();
         console.log(result.message);
+        getRows(); // Refresh the table after sending data
     } catch (error) {
         console.error('Error sending lieferverzug data:', error);
     }
-    getRows(); // Refresh the table after sending data
 }
 
 function getCurrentKW() { // Source: Gemini >:(

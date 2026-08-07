@@ -24,9 +24,10 @@ app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 class Lieferverzug(BaseModel):
     vorgangsnummer: str
+    kommission: str
     neue_kw: int
     lieferverzugs_grund: str
-    email: str = None  # Optional email field
+    email: str
 
 
 r"""
@@ -68,16 +69,11 @@ async def get_all_rows():
 async def insert_verzug(lieferverzug: Lieferverzug):
     from db.internal_db_connection import insert_lieferverzug
     try:
-        mail = lieferverzug.email
-        print(f"Received email from request: {mail}")
-        if not mail:
-            mail = await get_mail_for_vorgangsnummer(lieferverzug.vorgangsnummer)
-        print(f"Mail for Vorgangsnummer {lieferverzug.vorgangsnummer}: {mail}")
         sende_lieferverzugs_mail(
-            empfaenger_email=mail,
+            empfaenger_email=lieferverzug.email,
             bestellnummer=lieferverzug.vorgangsnummer,
             voraussichtliche_kw=lieferverzug.neue_kw,
-            komission="N/A"  # Replace with actual komission if available
+            komission=lieferverzug.kommission
         )
         insert_lieferverzug(
             vorgangsnummer=lieferverzug.vorgangsnummer,
