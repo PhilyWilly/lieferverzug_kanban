@@ -25,6 +25,7 @@ app.mount("/static", StaticFiles(directory="src/static"), name="static")
 class Lieferverzug(BaseModel):
     vorgangsnummer: str
     kommission: str
+    artikelbeschreibung: str
     neue_kw: int
     lieferverzugs_grund: str
     email: str
@@ -73,7 +74,8 @@ async def insert_verzug(lieferverzug: Lieferverzug):
             empfaenger_email=lieferverzug.email,
             bestellnummer=lieferverzug.vorgangsnummer,
             voraussichtliche_kw=lieferverzug.neue_kw,
-            komission=lieferverzug.kommission
+            komission=lieferverzug.kommission,
+            artikelbeschreibung=lieferverzug.artikelbeschreibung
         )
         insert_lieferverzug(
             vorgangsnummer=lieferverzug.vorgangsnummer,

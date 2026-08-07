@@ -1,6 +1,6 @@
 from smtp.mail_sender import send_email
 
-def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission):
+def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission, artikelbeschreibung):
     send_email(
         to_address="konfigurator@rehatec.com", # TODO: Replace with empfaenger_email when ready
         subject=f"Aktualisierung zu Ihrem Auftrag {bestellnummer}",
@@ -10,9 +10,10 @@ def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_k
 <p>wir möchten Sie über den aktuellen Stand Ihres Auftrags informieren:</p>
 
 <p><b>Auftragsnummer:</b> {bestellnummer}<br>
-<b>Kommission:</b> {komission}</p>
+<b>Kommission:</b> {komission}<br>
+<b>Produkt</b>: {artikelbeschreibung}</p>
 
-<p>Der Versand Ihres Auftrags ist aktuell für die Kalenderwoche <b>{voraussichtliche_kw}</b> vorgesehen.</p>
+<p>Der Versand Ihres Auftrags ist aktuell für die Kalenderwoche <b>{voraussichtliche_kw}</b> verschoben.</p>
 
 <p>Über Änderungen des Versandtermins informieren wir Sie selbstverständlich zeitnah.</p>
 

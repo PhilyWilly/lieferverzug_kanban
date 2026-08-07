@@ -199,11 +199,13 @@ async function sendLieferverzug(rowData) {
     const lieferverzugsGrund = lieferverzugsGrundInput ? lieferverzugsGrundInput.value : null;
     const vorgangsnummer = rowData["vorgangsnummer"];
     const kommission = rowData["vorgangstext"];
+    const artikelbeschreibung = rowData["artikelbeschreibung"];
     const email = rowData["email"] || null; // Get email from rowData if available
 
     const payload = {
         vorgangsnummer: vorgangsnummer,
         kommission: kommission,
+        artikelbeschreibung: artikelbeschreibung,
         neue_kw: neueKW,
         lieferverzugs_grund: lieferverzugsGrund,
         email: email  // Include email if available
