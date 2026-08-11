@@ -62,7 +62,7 @@ r"""
 #         }
 #     )
 
-@app.get("/open_orders/{department}/", response_class=HTMLResponse)
+@app.get("/{department}/", response_class=HTMLResponse)
 async def open_orders(request: Request, department: str):
     if department not in departments:
         raise HTTPException(status_code=404, detail="Department not found")
