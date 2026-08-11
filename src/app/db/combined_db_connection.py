@@ -1,8 +1,8 @@
 from db.kanban_db_connection import get_interesting_produktionslinien
 from db.internal_db_connection import get_every_lieferverzug
 
-def combined_database_data():
-    kanban_data = get_interesting_produktionslinien()
+def combined_database_data(department):
+    kanban_data = get_interesting_produktionslinien(department)
     if kanban_data is None:
         return []
     lieferverzug_data = get_every_lieferverzug()

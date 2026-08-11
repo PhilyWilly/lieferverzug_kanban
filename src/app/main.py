@@ -22,6 +22,15 @@ templates = Jinja2Templates(directory="src/templates")
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
+departments = [
+    "Pauli",
+    "Zimmergestelle",
+    "Rückenliegebrett",
+    "Stehgeräte",
+    "Fahrgestelle",
+    "Sonderbau"
+]
+
 class Lieferverzug(BaseModel):
     vorgangsnummer: str
     kommission: str
@@ -39,19 +48,36 @@ r"""
 |_| |_| |_| |_|  |_|_____| 
 """
 # Wer das ließt ist ein Femboy :3
-@app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
-    return RedirectResponse(url="/open_orders/")
-@app.get("/open_orders/", response_class=HTMLResponse)
-async def open_orders(request: Request):
+# @app.get("/", response_class=HTMLResponse)
+# async def root(request: Request):
+#     return RedirectResponse(url="/open_orders/")
+# @app.get("/open_orders/", response_class=HTMLResponse)
+# async def open_orders(request: Request):
+#     return templates.TemplateResponse(
+#         request = request,
+#         name = "index.html",
+#         context = {
+#             "request": request,
+#             "favicon_url": FAVICON_URL
+#         }
+#     )
+
+@app.get("/open_orders/{department}/", response_class=HTMLResponse)
+async def open_orders(request: Request, department: str):
+    if department not in departments:
+        raise HTTPException(status_code=404, detail="Department not found")
+
     return templates.TemplateResponse(
-        request = request,
-        name = "index.html",
-        context = {
+        request=request,
+        name="index.html",
+        context={
             "request": request,
-            "favicon_url": FAVICON_URL
-        }
+            "favicon_url": FAVICON_URL,
+            "department": department,
+        },
     )
+
+
 
 
 r"""
@@ -61,9 +87,11 @@ r"""
  / ___ \|  __/| |  
 /_/   \_\_|  |___| 
 """
-@app.get("/rows/")
-async def get_all_rows():
-    get_db_data = combined_database_data()
+@app.get("/rows/{department}")
+async def get_all_rows(department: str):
+    if department not in departments:
+        raise HTTPException(status_code=400, detail="Invalid department")
+    get_db_data = combined_database_data(department)
     return JSONResponse(content= get_db_data)
 
 @app.post("/verzug/")

@@ -93,7 +93,7 @@ def execute_query(query, as_dict=True):
             cursor.close()
             conn.close()
 
-def get_interesting_produktionslinien():
+def get_interesting_produktionslinien(department):
     gemini_query = """
 SELECT
     p.*,
@@ -131,7 +131,7 @@ WHERE p.vp_delete = 0
   AND p.vo_nummer NOT LIKE 'AN%'
 
 ORDER BY p.vp_lieferdatum ASC, p.vo_nummer ASC;"""
-    chat_query = """
+    query = f"""
     SELECT
     p.*,
     k.Firma  AS firma,
@@ -151,7 +151,7 @@ LEFT JOIN kunden k
 WHERE p.vp_delete = 0
   AND p.vo_status = 2
   AND p.vo_nummer NOT LIKE 'AN%'
-  AND p.produktionslinie LIKE 'Fahrgestelle%'
+  AND p.produktionslinie LIKE '{department}%'
   AND p.id IN (
       SELECT MAX(id)
       FROM produktionslinie
@@ -202,7 +202,7 @@ ORDER BY p.vp_lieferdatum ASC, p.vo_nummer ASC;
     # result = execute_query(original_query, as_dict=True)
     # print(f"Original Query executed in {time.time() - start_time:.2f} seconds. Rows fetched: {len(result) if result else 0}")
     start_time = time.time()
-    result = execute_query(chat_query, as_dict=True)
+    result = execute_query(query, as_dict=True)
     print(f"Original Query executed in {time.time() - start_time:.2f} seconds. Rows fetched: {len(result) if result else 0}")
     if not result:
         return None
@@ -228,7 +228,7 @@ def sanitize_produktionslinien(produktionslinien):
 
 if __name__ == "__main__":
     print("Fetching interesting produktionslinien...")
-    interesting_rows = get_interesting_produktionslinien()
+    interesting_rows = get_interesting_produktionslinien("Fahrgestelle")
     if interesting_rows:
         for row in interesting_rows:
             print(row)

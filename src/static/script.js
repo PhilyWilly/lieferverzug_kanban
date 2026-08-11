@@ -51,8 +51,11 @@ async function getRows() {
     const tableBody = document.getElementById('lieferungen_body');
     tableBody.innerHTML = '';
     let response;
+
+    const currentDepartment = window.location.pathname.split('/').filter(Boolean).pop(); // Get the last part of the URL path
+    console.log(`Fetching rows for department: ${currentDepartment}`);
     try {
-        response = await fetch('/rows/', {
+        response = await fetch(`/rows/${currentDepartment}`, {
             method: 'GET',
         });
     }
