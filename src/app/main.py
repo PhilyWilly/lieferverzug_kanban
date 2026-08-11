@@ -91,8 +91,8 @@ r"""
 async def get_all_rows(department: str):
     if department not in departments:
         raise HTTPException(status_code=400, detail="Invalid department")
-    get_db_data = combined_database_data(department)
-    return JSONResponse(content= get_db_data)
+    get_db_data = await combined_database_data(department)
+    return JSONResponse(content=get_db_data)
 
 @app.post("/verzug/")
 async def insert_verzug(lieferverzug: Lieferverzug):
@@ -105,13 +105,14 @@ async def insert_verzug(lieferverzug: Lieferverzug):
             komission=lieferverzug.kommission,
             artikelbeschreibung=lieferverzug.artikelbeschreibung
         )
-        insert_lieferverzug(
+        await insert_lieferverzug(
             vorgangsnummer=lieferverzug.vorgangsnummer,
             neue_kw=lieferverzug.neue_kw,
             lieferverzugs_grund=lieferverzug.lieferverzugs_grund
         )
         return JSONResponse(content={"message": "Lieferverzug inserted successfully."})
     except Exception as e:
+        print(f"Error inserting Lieferverzug: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

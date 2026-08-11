@@ -1,11 +1,11 @@
 from db.kanban_db_connection import get_interesting_produktionslinien
 from db.internal_db_connection import get_every_lieferverzug
 
-def combined_database_data(department):
-    kanban_data = get_interesting_produktionslinien(department)
+async def combined_database_data(department):
+    kanban_data = await get_interesting_produktionslinien(department)
     if kanban_data is None:
         return []
-    lieferverzug_data = get_every_lieferverzug()
+    lieferverzug_data = await get_every_lieferverzug()
 
     # Create a dictionary for quick lookup of lieferverzug data by vorgangsnummer
     lieferverzug_dict = {lv['vorgangsnummer']: lv for lv in lieferverzug_data}
