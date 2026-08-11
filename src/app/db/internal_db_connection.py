@@ -6,7 +6,14 @@ def get_every_lieferverzug():
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     try:
-        cursor.execute("SELECT vorgangsnummer, neue_kw, lieferverzugs_grund FROM lieferverzug;")
+        cursor.execute("""
+        SELECT 
+            vorgangsnummer, 
+            MAX(neue_kw) as neue_kw, 
+            lieferverzugs_grund 
+        FROM lieferverzug
+        GROUP BY vorgangsnummer
+        ;""")
         fetched = cursor.fetchall()
         # get column names from cursor description and map each row to a dict
         columns = [col[0] for col in cursor.description] if cursor.description else []
@@ -27,9 +34,6 @@ def insert_lieferverzug(vorgangsnummer, neue_kw, lieferverzugs_grund):
             """
         INSERT INTO lieferverzug (vorgangsnummer, neue_kw, lieferverzugs_grund)
         VALUES (?, ?, ?)
-        ON CONFLICT(vorgangsnummer) DO UPDATE SET
-            neue_kw = excluded.neue_kw,
-            lieferverzugs_grund = excluded.lieferverzugs_grund
         """, (vorgangsnummer, neue_kw, lieferverzugs_grund)
         )
         connection.commit()

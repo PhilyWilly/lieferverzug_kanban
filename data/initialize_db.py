@@ -12,7 +12,7 @@ def initialize_database():
             """
             CREATE TABLE IF NOT EXISTS lieferverzug (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                vorgangsnummer TEXT NOT NULL UNIQUE,
+                vorgangsnummer TEXT NOT NULL,
                 neue_kw INTEGER NOT NULL,
                 lieferverzugs_grund TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
