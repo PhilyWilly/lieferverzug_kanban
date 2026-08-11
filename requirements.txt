@@ -1,5 +1,4 @@
 dotenv
 aiomysql
 aiosqlite
-smtplib
 fastapi[standard]
