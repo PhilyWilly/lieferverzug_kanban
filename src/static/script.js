@@ -17,6 +17,40 @@ let insertedYears = new Set(); // To track inserted years
 let selectedRow = null; // To track the currently selected row
 const loader = document.getElementsByClassName('loader')[0];
 
+// Get DOM element references
+const confirmModal = document.getElementById('confirmModal');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+
+// 2. Handle "Yes" - run function then close overlay
+yesBtn.addEventListener('click', () => {
+    confirmModal.close();
+    sendLieferverzug(selectedRow);
+});
+
+// 3. Handle "No" - simply close overlay
+noBtn.addEventListener('click', () => {
+    confirmModal.close();
+});
+
+function bestätigungsButtonClicked(rowData) {
+    const neueKWInput = document.getElementById(`neue_kw_${rowData["vorgangsnummer"]}`);
+    const lieferverzugsGrundInput = document.getElementById(`lieferverzugs_grund_${rowData["vorgangsnummer"]}`);
+    const neueKW = neueKWInput ? neueKWInput.value : null;
+    const lieferverzugsGrund = lieferverzugsGrundInput ? lieferverzugsGrundInput.value : null;
+    const vorgangsnummer = rowData["vorgangsnummer"];
+    const kommission = rowData["vorgangstext"];
+    const artikelbeschreibung = rowData["artikelbeschreibung"];
+    const email = rowData["email"] || null; // Get email from rowData if available
+
+    if (!neueKW || !lieferverzugsGrund) {
+        alert("Bitte füllen Sie sowohl die neue KW als auch den Lieferverzugsgrund aus.");
+        return;
+    }
+
+    confirmModal.showModal();
+}
+
 function setSelectedRow(row) {
     selectedRow = row;
     document.querySelectorAll('.row_checkbox').forEach((checkbox) => {
@@ -143,8 +177,7 @@ function inserTableRow(rowData, rows) {
             button.id = `bestätigen_${rowData["vorgangsnummer"]}`;
             button.classList.add('confirm_button');
             button.addEventListener('click', () => {
-                // Handle button click event here
-                sendLieferverzug(rowData);
+                bestätigungsButtonClicked(rowData);
             });
             cell.appendChild(button);
         }

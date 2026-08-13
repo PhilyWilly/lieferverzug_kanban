@@ -127,3 +127,56 @@ table {
         transform: rotate(360deg);
     }
 }
+
+/* Styling the overlay dialog */
+dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    font-family: system-ui, sans-serif;
+}
+
+dialog h3 {
+    margin-top: 0;
+    margin-bottom: 0px;
+    font-size: 1.5em;
+}
+
+dialog p {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Semi-transparent backdrop overlay */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+/* Layout for buttons */
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    padding: 6px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #e7344c;
+    color: white;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+}
