@@ -97,6 +97,13 @@ async def get_all_rows(department: str):
 @app.post("/verzug/")
 async def insert_verzug(lieferverzug: Lieferverzug, request: Request):
     from db.internal_db_connection import insert_lieferverzug
+
+    x_forwarded_for = request.headers.get("X-Forwarded-For")
+    if x_forwarded_for:
+        client_ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        client_ip = request.client.host if request.client else "unknown"
+
     try:
         sende_lieferverzugs_mail(
             empfaenger_email=lieferverzug.email,
@@ -109,7 +116,7 @@ async def insert_verzug(lieferverzug: Lieferverzug, request: Request):
             vorgangsnummer=lieferverzug.vorgangsnummer,
             neue_kw=lieferverzug.neue_kw,
             lieferverzugs_grund=lieferverzug.lieferverzugs_grund,
-            client_ip=request.client.host
+            client_ip=client_ip
         )
         return JSONResponse(content={"message": "Lieferverzug inserted successfully."})
     except Exception as e:
