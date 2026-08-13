@@ -1,6 +1,7 @@
 from smtp.mail_sender import send_email
 
 def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission, artikelbeschreibung):
+    print(f"Sending email to {empfaenger_email} regarding order {bestellnummer} with new delivery week {voraussichtliche_kw}")
     send_email(
         to_address="konfigurator@rehatec.com", # TODO: Replace with empfaenger_email when ready
         subject=f"Aktualisierung zu Ihrem Auftrag {bestellnummer}",

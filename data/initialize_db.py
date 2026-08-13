@@ -15,6 +15,7 @@ def initialize_database():
                 vorgangsnummer TEXT NOT NULL,
                 neue_kw INTEGER NOT NULL,
                 lieferverzugs_grund TEXT,
+                client_ip TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """

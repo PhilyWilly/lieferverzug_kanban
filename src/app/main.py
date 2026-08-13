@@ -95,7 +95,7 @@ async def get_all_rows(department: str):
     return JSONResponse(content=get_db_data)
 
 @app.post("/verzug/")
-async def insert_verzug(lieferverzug: Lieferverzug):
+async def insert_verzug(lieferverzug: Lieferverzug, request: Request):
     from db.internal_db_connection import insert_lieferverzug
     try:
         sende_lieferverzugs_mail(
@@ -108,7 +108,8 @@ async def insert_verzug(lieferverzug: Lieferverzug):
         await insert_lieferverzug(
             vorgangsnummer=lieferverzug.vorgangsnummer,
             neue_kw=lieferverzug.neue_kw,
-            lieferverzugs_grund=lieferverzug.lieferverzugs_grund
+            lieferverzugs_grund=lieferverzug.lieferverzugs_grund,
+            client_ip=request.client.host
         )
         return JSONResponse(content={"message": "Lieferverzug inserted successfully."})
     except Exception as e:

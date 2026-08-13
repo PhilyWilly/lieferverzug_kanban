@@ -22,15 +22,15 @@ async def get_every_lieferverzug():
         print(f"Error talking to the database: {error}")
         return []
 
-async def insert_lieferverzug(vorgangsnummer, neue_kw, lieferverzugs_grund):
+async def insert_lieferverzug(vorgangsnummer, neue_kw, lieferverzugs_grund, client_ip):
     db_path = os.path.join("data", "database.db")
     try:
         async with aiosqlite.connect(db_path) as db:
             await db.execute(
                 """
-        INSERT INTO lieferverzug (vorgangsnummer, neue_kw, lieferverzugs_grund)
-        VALUES (?, ?, ?)
-        """, (vorgangsnummer, neue_kw, lieferverzugs_grund)
+        INSERT INTO lieferverzug (vorgangsnummer, neue_kw, lieferverzugs_grund, client_ip)
+        VALUES (?, ?, ?, ?)
+        """, (vorgangsnummer, neue_kw, lieferverzugs_grund, client_ip)
             )
             await db.commit()
     except aiosqlite.Error as error:
