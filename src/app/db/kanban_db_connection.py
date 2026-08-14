@@ -85,6 +85,9 @@ LIMIT 1;"""
     return None
 
 async def get_interesting_produktionslinien(department):
+    query_department = f"LIKE '{department}%'"
+    if department == "Pauli":
+        query_department = "REGEXP '^(Kopfstütze|Therapiestuhl)'"
     query = f"""
     SELECT
     p.*,
@@ -105,7 +108,7 @@ LEFT JOIN kunden k
 WHERE p.vp_delete = 0
   AND p.vo_status = 2
   AND p.vo_nummer NOT LIKE 'AN%'
-  AND p.produktionslinie LIKE '{department}%'
+  AND (p.produktionslinie {query_department})
   AND p.id IN (
       SELECT MAX(id)
       FROM produktionslinie
@@ -137,3 +140,14 @@ def sanitize_produktionslinien(produktionslinien):
         }
         sanitized.append(sanitized_row)
     return sanitized
+
+if __name__ == "__main__":
+    import asyncio
+    query = """
+SELECT p.produktionslinie
+FROM produktionslinie AS p
+WHERE p.produktionslinie REGEXP '^(Badeliege|Pauli|Therapiestuhl)'
+GROUP BY p.produktionslinie
+"""
+    produktionslinien = asyncio.run(execute_query(query, as_dict=False))
+    print(f"Fetched {len(produktionslinien) if produktionslinien else 0} rows for department '{produktionslinien}'")
