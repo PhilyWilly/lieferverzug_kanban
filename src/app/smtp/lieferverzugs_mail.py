@@ -10,10 +10,7 @@ def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_k
     if not PRODUCTION:
         print(f"Sending email to {empfaenger_email} regarding order {bestellnummer} with new delivery week {voraussichtliche_kw}")
     to_adress = empfaenger_email if PRODUCTION else "konfigurator@rehatec.com"
-    send_email(
-        to_address=to_adress,
-        subject=f"Aktualisierung zu Ihrem Auftrag {bestellnummer}",
-        html_body = f"""
+    html_body = f"""
 <p>Sehr geehrte Damen und Herren,</p>
 
 <p>hiermit informieren wir Sie über den aktuellen Stand Ihres Auftrags:</p>
@@ -30,7 +27,19 @@ def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_k
 
 <p>Mit freundlichen Grüßen<br><br>
 Ihr Rehatec GmbH - Team</p>
-"""
+    """
+    if empfaenger_email == "" or empfaenger_email is None:
+        print(f"No email address provided for order {bestellnummer}. Skipping email.")
+        send_email(
+            to_address="info@rehatec.com",
+            subject=f"Bitte E-Mail hinterlegen für: {bestellnummer}",
+            html_body = f"Verzug für Auftrag {bestellnummer} wurde eingetragen, aber es ist keine E-Mail-Adresse hinterlegt. Bitte E-Mail-Adresse im System hinterlegen."
+        )
+        return
+    send_email(
+        to_address=to_adress,
+        subject=f"Aktualisierung zu Ihrem Auftrag {bestellnummer}",
+        html_body = html_body
     )
 
 if __name__ == "__main__":
