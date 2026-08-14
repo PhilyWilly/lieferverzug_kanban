@@ -48,6 +48,11 @@ function bestätigungsButtonClicked(rowData) {
         return;
     }
 
+    if (neueKW < 1 || neueKW > 53) {
+        alert("Bitte geben Sie eine gültige KW zwischen 1 und 53 ein.");
+        return;
+    }
+
     confirmModal.showModal();
 }
 
