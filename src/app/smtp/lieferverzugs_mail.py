@@ -1,9 +1,17 @@
+from dotenv import load_dotenv
 from smtp.mail_sender import send_email
+import os 
+
+load_dotenv()
+
+PRODUCTION = os.getenv("PRODUCTION", "FALSE").upper() == "TRUE"
 
 def sende_lieferverzugs_mail(empfaenger_email, bestellnummer, voraussichtliche_kw, komission, artikelbeschreibung):
-    print(f"Sending email to {empfaenger_email} regarding order {bestellnummer} with new delivery week {voraussichtliche_kw}")
+    if not PRODUCTION:
+        print(f"Sending email to {empfaenger_email} regarding order {bestellnummer} with new delivery week {voraussichtliche_kw}")
+    to_adress = empfaenger_email if PRODUCTION else "konfigurator@rehatec.com"
     send_email(
-        to_address="konfigurator@rehatec.com", # TODO: Replace with empfaenger_email when ready
+        to_address=to_adress,
         subject=f"Aktualisierung zu Ihrem Auftrag {bestellnummer}",
         html_body = f"""
 <p>Sehr geehrte Damen und Herren,</p>

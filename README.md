@@ -76,5 +76,7 @@ FAVICON_URL= https://example.org/icon.ico
 SERVERURL = "localhost"
 SERVERPORT = 8000
 
+PRODUCTION=FALSE
+
 ```
 
